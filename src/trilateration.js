@@ -1,101 +1,92 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Plot from 'react-plotly.js';
+import { matrix, multiply, transpose } from 'mathjs';
 
-const TrilaterationVisualization = () => {
-  // Anchor positions and distances in meters
-  const [anchorPositions] = useState([
-    [0, 0],
-    [0, 40.8 * 0.3048], // Convert feet to meters
-    [22 * 0.3048, 40.8 * 0.3048], // Convert feet to meters
-  ]);
-  const [distances] = useState([1472 / 1000, 2467 / 1000, 4451 / 1000]); // Convert millimeters to meters
+const Trilateration = () => {
+  const [estimatedPosition, setEstimatedPosition] = useState(null);
 
-  // State for estimated position
-  const [estimatedPosition, setEstimatedPosition] = useState([0, 0]);
+  const trilaterate = (anchorPositions, distances) => {
+    const numAnchors = anchorPositions.length;
+    if (numAnchors < 3) {
+      throw new Error("Trilateration requires at least three anchor nodes.");
+    }
+
+    // Initialize matrices
+    let A = Array(numAnchors - 1).fill(0).map(() => Array(2).fill(0));
+    let b = Array(numAnchors - 1).fill(0).map(() => Array(1).fill(0));
+
+    // Build matrices
+    for (let i = 0; i < numAnchors - 1; i++) {
+      A[i][0] = 2 * (anchorPositions[i + 1][0] - anchorPositions[0][0]);
+      A[i][1] = 2 * (anchorPositions[i + 1][1] - anchorPositions[0][1]);
+      b[i] = [distances[0]**2 - distances[i + 1]**2 - anchorPositions[0][0]**2 + anchorPositions[i + 1][0]**2 - anchorPositions[0][1]**2 + anchorPositions[i + 1][1]**2];
+    }
+
+    // Solve linear least squares problem
+    try {
+      const A_Matrix = matrix(A);
+      const b_Matrix = matrix(b);
+
+      const solutionMatrix = multiply(
+        multiply(
+          multiply(
+            transpose(A_Matrix),
+            A_Matrix
+          ).inv(),
+          transpose(A_Matrix)
+        ),
+        b_Matrix
+      );
+
+      const x = solutionMatrix.get([0, 0]);
+      const y = solutionMatrix.get([1, 0]);
+      setEstimatedPosition([x, y]);
+      
+    } catch (error) {
+      console.error("Trilateration failed. Anchors may be collinear.");
+    }
+  };
+
+  const anchorPositions = [[0, 0], [22 * 0.3048, 40.8 * 0.3048],[0, 40.8 * 0.3048],];
+  const distancesMeters = [1472, 4451, 2467].map(distance => distance / 1000);
 
   useEffect(() => {
-    // Function to perform trilateration
-    const trilaterate = (anchorPositions, distances) => {
-      const numAnchors = anchorPositions.length;
-      if (numAnchors < 3) {
-        throw new Error("Trilateration requires at least three anchor nodes.");
-      }
+    trilaterate(anchorPositions, distancesMeters);
+  }, []);
 
-      // Initialize matrices
-      const A = [];
-      const b = [];
-      for (let i = 0; i < numAnchors - 1; i++) {
-        const x0 = anchorPositions[0][0];
-        const y0 = anchorPositions[0][1];
-        const x1 = anchorPositions[i + 1][0];
-        const y1 = anchorPositions[i + 1][1];
-        const d0 = distances[0];
-        const di = distances[i + 1];
-        A.push([2 * (x1 - x0), 2 * (y1 - y0)]);
-        b.push([d0 ** 2 - di ** 2 - x0 ** 2 + x1 ** 2 - y0 ** 2 + y1 ** 2]);
-      }
-
-      // Solve linear least squares problem
-      const A_matrix = math.matrix(A);
-      const b_matrix = math.matrix(b);
-      const solution = math.lusolve(A_matrix, b_matrix)._data;
-
-      const x = solution[0][0];
-      const y = solution[1][0];
-
-      return [x, y];
-    };
-
-    // Call trilateration function
-    const newEstimatedPosition = trilaterate(anchorPositions, distances);
-    setEstimatedPosition(newEstimatedPosition);
-  }, [anchorPositions, distances]);
+  const plotData = [
+    {
+      type: 'scatter',
+      mode: 'markers',
+      x: anchorPositions.map(pos => pos[0]),
+      y: anchorPositions.map(pos => pos[1]),
+      marker: { color: 'red' },
+      name: 'Anchors'
+    },
+    estimatedPosition && {
+      type: 'scatter',
+      mode: 'markers',
+      x: [estimatedPosition[0]],
+      y: [estimatedPosition[1]],
+      marker: { color: 'blue' },
+      name: 'Estimated Position'
+    }
+  ].filter(Boolean);
 
   return (
     <div>
-      <Plot
-        data={[
-          {
-            type: 'scatter',
-            mode: 'markers',
-            x: anchorPositions.map(pos => pos[0]),
-            y: anchorPositions.map(pos => pos[1]),
-            marker: { color: 'red' },
-            name: 'Anchor Nodes'
-          },
-          {
-            type: 'scatter',
-            mode: 'markers',
-            x: [estimatedPosition[0]],
-            y: [estimatedPosition[1]],
-            marker: { color: 'blue', size: 10 },
-            name: 'Estimated Position'
-          },
-          ...anchorPositions.map(pos => ({
-            type: 'scatter',
-            mode: 'lines',
-            x: [pos[0], estimatedPosition[0]],
-            y: [pos[1], estimatedPosition[1]],
-            line: { dash: 'dash', color: 'black' },
-            showlegend: false
-          }))
-        ]}
-        layout={{
-          width: 800,
-          height: 600,
-          title: 'UWB Positioning',
-          xaxis: { title: 'X' },
-          yaxis: { title: 'Y' },
-          showlegend: true,
-          grid: { rows: 1, columns: 1 },
-          margin: { l: 50, r: 50, b: 50, t: 50 },
-          autosize: true,
-          hovermode: 'closest',
-          hoverlabel: { bgcolor: '#FFF' }
-        }}
-      />
+      {estimatedPosition && (
+        <Plot
+          data={plotData}
+          layout={{
+            title: 'UWB Positioning',
+            xaxis: { title: 'X' },
+            yaxis: { title: 'Y' },
+            showlegend: true
+          }}
+        />
+      )}
     </div>
   );
 };
-
-export default TrilaterationVisualization;
+export default Trilateration;
