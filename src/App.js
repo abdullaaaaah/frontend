@@ -1,5 +1,5 @@
 import React from 'react';
-import Trilateration from './Trilateration';
+import Trilateration from './Trilaterations';
 
 function App() {
   return (
