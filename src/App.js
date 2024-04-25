@@ -1,6 +1,5 @@
 import React from 'react';
 import Trilateration from './Trilaterations';
-
 function App() {
   return (
     <div className="App">
