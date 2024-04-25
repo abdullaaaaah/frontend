@@ -21,7 +21,7 @@ const Trilateration = () => {
 
   const fetchDistances = async (transmitterSerialNumbers) => {
     try {
-      const response = await fetch('http://103.9.23.119:6611/distance', {
+      const response = await fetch('https://uwb-backend.onrender.com//distance', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -58,7 +58,7 @@ const Trilateration = () => {
         distances: distances.map(item => item.distance)
       };
   
-      const response = await fetch('http://103.9.23.119:6611/trilaterate', {
+      const response = await fetch('https://uwb-backend.onrender.com//trilaterate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
