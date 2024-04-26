@@ -80,8 +80,8 @@ const Trilateration = () => {
     backgroundImage: `url(${backgroundImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center center',
-    width: '450px', // Width and height swapped for rotated image
-    height: '825px', // Width and height swapped for rotated image
+    height: '450px', // Width and height swapped for rotated image
+    width: '825px', // Width and height swapped for rotated image
     marginLeft: '250px', // Use marginLeft with a capital 'L'
     position: 'absolute',
     display: 'flex',
