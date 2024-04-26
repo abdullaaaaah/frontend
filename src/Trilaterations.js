@@ -5,7 +5,7 @@ const Trilateration = () => {
   const [estimatedPosition, setEstimatedPosition] = useState(null);
   const anchorPositions = [
     [6.70656, 0],
-    [0, 12.42912],
+    [0, 6],
     [6.70656, 12.42912]
   ];
   useEffect(() => {
