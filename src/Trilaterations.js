@@ -113,8 +113,11 @@ const Trilateration = () => {
     height: '10px',
     borderRadius: '50%',
     backgroundColor: 'blue',
-    left: `${x * 100 / 6.70656}%`,
-    top: `${100 - y * 100 / 12.42912}%`,
+    // left: `${x * 100 / 6.70656}%`,
+    // top: `${100 - y * 100 / 12.42912}%`,
+    
+    left: `${x * 100 / 12.42912}%`,
+    top: `${100 - y * 100 / 6.70656}%`,
     textAlign: 'center', // Center the text horizontally
     lineHeight: '10px', // Center the text vertically
     color: 'white', // Text color
