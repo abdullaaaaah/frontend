@@ -48,8 +48,8 @@ const Trilateration = () => {
     try {
       const anchorPositions = [
         [0, 0],
-        [0, 12.42912],
-        [6.70656, 12.42912]
+        [12.42912,0 ],
+        [12.42912,6.70656]
       ];
   
       // Construct the data object with anchorPositions and distances
