@@ -100,8 +100,11 @@ const Trilateration = () => {
     height: '10px',
     borderRadius: '50%',
     backgroundColor: 'red',
-    left: estimatedPosition ? `${estimatedPosition[0] * 100 / 6.70656}%` : 0,
-    top: estimatedPosition ? `${100 - estimatedPosition[1] * 100 / 12.42912}%` : 0,
+    // left: estimatedPosition ? `${estimatedPosition[0] * 100 / 6.70656}%` : 0,
+    // top: estimatedPosition ? `${100 - estimatedPosition[1] * 100 / 12.42912}%` : 0,
+    
+    left: estimatedPosition ? `${estimatedPosition[0] * 100 /12.42912 }%` : 0,
+    top: estimatedPosition ? `${100 - estimatedPosition[1] * 100 /6.70656}%` : 0,
     textAlign: 'center', // Center the text horizontally
     lineHeight: '10px', // Center the text vertically
     color: 'white', // Text color
