@@ -48,8 +48,8 @@ const Trilateration = () => {
     try {
       const anchorPositions = [
         [0, 0],
-        [0, 12.42912],
-        [6.70656, 12.42912]
+        [0, 6.70656],
+        [ 12.42912,6.70656]
       ];
   
       // Construct the data object with anchorPositions and distances
@@ -94,7 +94,7 @@ const Trilateration = () => {
     position: 'relative',
     width: '100%',
     height: '100%',
-    transform: 'rotate(-90deg)', // Counter-rotate the marker wrapper to align with the grid rotation
+    // transform: 'rotate(-90deg)', // Counter-rotate the marker wrapper to align with the grid rotation
   };
   const markerStyle = {
     position: 'absolute',
