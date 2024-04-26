@@ -68,8 +68,8 @@ const Trilateration = () => {
   
       const estimatedPosition = await response.json();
       console.log('Estimated position:', estimatedPosition); // Log the estimated position7
-    //   setEstimatedPosition(estimatedPosition);
-    setEstimatedPosition(estimatedPosition.estimatedPosition);
+      //   setEstimatedPosition(estimatedPosition);
+      setEstimatedPosition(estimatedPosition.estimatedPosition);
     } catch (error) {
       console.error('Error performing trilateration:', error);
     }
@@ -80,19 +80,21 @@ const Trilateration = () => {
     backgroundImage: `url(${backgroundImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center center',
-    width: '825px',
-    height: '450px',
+    width: '450px', // Width and height swapped for rotated image
+    height: '825px', // Width and height swapped for rotated image
     marginLeft: '250px', // Use marginLeft with a capital 'L'
     position: 'absolute',
     display: 'flex',
     justifyContent: 'center', // Center the image horizontally
     alignItems: 'center', // Center the image vertically
+    transform: 'rotate(90deg)', // Rotate the grid 90 degrees clockwise
   };
 
   const markerWrapperStyle = {
     position: 'relative',
     width: '100%',
     height: '100%',
+    transform: 'rotate(-90deg)', // Counter-rotate the marker wrapper to align with the grid rotation
   };
   const markerStyle = {
     position: 'absolute',
@@ -113,8 +115,8 @@ const Trilateration = () => {
     height: '10px',
     borderRadius: '50%',
     backgroundColor: 'blue',
-    left: `${x * 100 / 6.70656}%`,
-    top: `${100 - y * 100 / 12.42912}%`,
+    left: `${y * 100 / 12.42912}%`, // Adjusted x and y coordinates
+    top: `${x * 100 / 6.70656}%`, // Adjusted x and y coordinates
     textAlign: 'center', // Center the text horizontally
     lineHeight: '10px', // Center the text vertically
     color: 'white', // Text color
