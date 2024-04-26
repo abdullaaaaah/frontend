@@ -4,7 +4,7 @@ import backgroundImage from './map.jpg';
 const Trilateration = () => {
   const [estimatedPosition, setEstimatedPosition] = useState(null);
   const anchorPositions = [
-    [6.70656, 0],
+    [0, 0],
     [0, 12.42912],
     [6.70656, 12.42912]
   ];
@@ -48,8 +48,8 @@ const Trilateration = () => {
     try {
       const anchorPositions = [
         [0, 0],
-        [12.42912,0 ],
-        [12.42912,6.70656]
+        [0, 12.42912],
+        [6.70656, 12.42912]
       ];
   
       // Construct the data object with anchorPositions and distances
@@ -100,11 +100,8 @@ const Trilateration = () => {
     height: '10px',
     borderRadius: '50%',
     backgroundColor: 'red',
-    // left: estimatedPosition ? `${estimatedPosition[0] * 100 / 6.70656}%` : 0,
-    // top: estimatedPosition ? `${100 - estimatedPosition[1] * 100 / 12.42912}%` : 0,
-    
-    left: estimatedPosition ? `${estimatedPosition[0] * 100 /12.42912 }%` : 0,
-    top: estimatedPosition ? `${100 - estimatedPosition[1] * 100 /6.70656}%` : 0,
+    left: estimatedPosition ? `${estimatedPosition[0] * 100 / 6.70656}%` : 0,
+    top: estimatedPosition ? `${100 - estimatedPosition[1] * 100 / 12.42912}%` : 0,
     textAlign: 'center', // Center the text horizontally
     lineHeight: '10px', // Center the text vertically
     color: 'white', // Text color
@@ -116,11 +113,8 @@ const Trilateration = () => {
     height: '10px',
     borderRadius: '50%',
     backgroundColor: 'blue',
-    // left: `${x * 100 / 6.70656}%`,
-    // top: `${100 - y * 100 / 12.42912}%`,
-    
-    left: `${x * 100 / 12.42912}%`,
-    top: `${100 - y * 100 / 6.70656}%`,
+    left: `${x * 100 / 6.70656}%`,
+    top: `${100 - y * 100 / 12.42912}%`,
     textAlign: 'center', // Center the text horizontally
     lineHeight: '10px', // Center the text vertically
     color: 'white', // Text color
