@@ -5,8 +5,8 @@ const Trilateration = () => {
   const [estimatedPosition, setEstimatedPosition] = useState(null);
   const anchorPositions = [
     [0, 0],
-    [0, 12.42912],
-    [6.70656, 12.42912]
+    [6.70656, 0],
+    [6.70656, 12.42912],
   ];
   useEffect(() => {
     // Fetch distances initially
@@ -47,10 +47,10 @@ const Trilateration = () => {
   const trilaterate = async (distances) => {
     try {
       const anchorPositions = [
-        [0, 0],
-        [0, 6.70656],
-        [ 12.42912,6.70656]
-      ];
+    [0, 0],
+    [6.70656, 0],
+    [6.70656, 12.42912],
+  ];
   
       // Construct the data object with anchorPositions and distances
       const data = {
@@ -87,7 +87,7 @@ const Trilateration = () => {
     display: 'flex',
     justifyContent: 'center', // Center the image horizontally
     alignItems: 'center', // Center the image vertically
-    transform: 'rotate(90deg)', // Rotate the grid 90 degrees clockwise
+    // transform: 'rotate(90deg)', // Rotate the grid 90 degrees clockwise
   };
 
   const markerWrapperStyle = {
