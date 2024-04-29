@@ -10,10 +10,10 @@ const Trilateration = () => {
   ];
   useEffect(() => {
     // Fetch distances initially
-    fetchDistances(["1000D1", "10010A","1000EE"]);
+    fetchDistances(["1000EE","1000D1", "10010A"]);
 
     // Set up interval to fetch data every 5 seconds
-    const intervalId = setInterval(() => fetchDistances(["1000D1", "10010A","1000EE"]), 10000);
+    const intervalId = setInterval(() => fetchDistances(["1000EE","1000D1", "10010A"]), 10000);
 
     // Clean up interval on component unmount
     return () => clearInterval(intervalId);
